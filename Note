@@ -1,0 +1,11 @@
+make file excutable :
+git add --chmod=+x file 
+
+dos to unix :
+dos2unix * 
+
+run unittest :
+python -m unittest discover tests -v  
+
+run pycodestyle :
+pycodestyle file
