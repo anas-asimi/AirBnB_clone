@@ -1,6 +1,8 @@
+#!/usr/bin/python3
 """ base_model.py """
 import uuid
 from datetime import datetime
+from . import storage
 
 
 class BaseModel:
@@ -13,6 +15,7 @@ class BaseModel:
             current_time = datetime.now()
             self.created_at = current_time
             self.updated_at = current_time
+            storage.new(self.to_dict)
         else:
             for key in kwargs:
                 if key == "created_at ":
@@ -32,6 +35,7 @@ class BaseModel:
     def save(self):
         """ save """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """ to_dict """
