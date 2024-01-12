@@ -15,13 +15,13 @@ class BaseModel:
             self.updated_at = current_time
         else:
             for key in kwargs:
-                if key is "created_at ":
-                    self.created_at = datetime.fromisoformat(value)
+                if key == "created_at ":
+                    self.created_at = datetime.fromisoformat(kwargs[key])
                     continue
-                if key is "updated_at ":
-                    self.updated_at = datetime.fromisoformat(value)
+                if key == "updated_at ":
+                    self.updated_at = datetime.fromisoformat(kwargs[key])
                     continue
-                if key is not "__class__":
+                if key != "__class__":
                     self.__setattr__(key, kwargs[key])
 
     def __str__(self):
