@@ -15,17 +15,17 @@ class BaseModel:
             current_time = datetime.now()
             self.created_at = current_time
             self.updated_at = current_time
-            storage.new(self.to_dict)
         else:
             for key in kwargs:
-                if key == "created_at ":
+                if key == "created_at":
                     self.created_at = datetime.fromisoformat(kwargs[key])
                     continue
-                if key == "updated_at ":
+                if key == "updated_at":
                     self.updated_at = datetime.fromisoformat(kwargs[key])
                     continue
                 if key != "__class__":
                     self.__setattr__(key, kwargs[key])
+        storage.new(self)
 
     def __str__(self):
         """ __str__ """
@@ -39,7 +39,7 @@ class BaseModel:
 
     def to_dict(self):
         """ to_dict """
-        dictionary = self.__dict__
+        dictionary = self.__dict__.copy()
         dictionary["__class__"] = self.__class__.__name__
         dictionary["created_at"] = self.created_at.isoformat("T", "auto")
         dictionary["updated_at"] = self.updated_at.isoformat("T", "auto")

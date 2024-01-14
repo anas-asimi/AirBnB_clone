@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """ file_storage.py """
 
+import json
+
 
 class FileStorage:
     """ FileStorage """
@@ -9,16 +11,33 @@ class FileStorage:
 
     def all(self):
         """ all """
-        pass
+        return (FileStorage.__objects)
 
     def new(self, obj):
         """ new """
-        pass
+        FileStorage.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
 
     def save(self):
         """ save """
-        pass
+        with open(FileStorage.__file_path, 'w', encoding='utf-8') as f:
+            temp = {}
+            for key in FileStorage.__objects.keys():
+                temp[key] = FileStorage.__objects[key].to_dict()
+            json_string = json.dumps(temp)
+            f.write(json_string)
 
     def reload(self):
         """ reload """
-        pass
+        from models.base_model import BaseModel
+        try:
+            with open(FileStorage.__file_path, 'r') as f:
+                json_string = f.read()
+                if json_string is None or len(json_string) == 0:
+                    return ([])
+                dictionary = json.loads(json_string)
+                FileStorage.__objects = {}
+                for obj_id in dictionary.keys():
+                    if "BaseModel" in obj_id:
+                        BaseModel(**dictionary[obj_id])
+        except FileNotFoundError as err:
+            return ([])
