@@ -33,16 +33,16 @@ class FileStorage:
 
         self.__class__.__objects = {}
         if self.__class__.__file_path == None:
-            return ([])
+            return ({})
         try:
             with open(self.__class__.__file_path, 'r') as f:
                 json_string = f.read()
                 if json_string is None or len(json_string) == 0:
-                    return ([])
+                    return ({})
                 dictionary = json.loads(json_string)
                 for obj_id in dictionary.keys():
                     if "BaseModel" in obj_id:
                         BaseModel(**dictionary[obj_id])
             return (self.__class__.__objects)
         except FileNotFoundError as err:
-            return ([])
+            return ({})
