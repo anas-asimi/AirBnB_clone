@@ -23,24 +23,22 @@ class FileStorage:
         if self.__class__.__file_path != None:
             with open(self.__class__.__file_path, 'w', encoding='utf-8') as f:
                 temp = {}
-                for key in self.__class__.__objects.keys():
-                    temp[key] = self.__class__.__objects[key].to_dict()
-                json.dump(temp,f)
+                for key, value in self.__class__.__objects.items():
+                    temp[key] = value.to_dict()
+                json.dump(temp, f)
 
     def reload(self):
         """ reload """
         from models.base_model import BaseModel
 
         self.__class__.__objects = {}
-        # if self.__class__.__file_path == None:
-        #     return ({})
         try:
             with open(self.__class__.__file_path, 'r') as f:
                 dictionary = json.load(f)
                 if dictionary:
-                    for obj_id in dictionary.keys():
-                        if "BaseModel" in obj_id:
-                            BaseModel(**dictionary[obj_id])
+                    for key, value in dictionary.items():
+                        if "BaseModel" in key:
+                            BaseModel(**value)
             # return (self.__class__.__objects)
         except FileNotFoundError:
             pass
