@@ -2,7 +2,7 @@
 """ base_model.py """
 import uuid
 from datetime import datetime
-from . import storage
+from models import storage
 
 
 class BaseModel:
@@ -16,15 +16,10 @@ class BaseModel:
             self.created_at = current_time
             self.updated_at = current_time
         else:
-            for key in kwargs:
-                if key == "created_at":
-                    self.created_at = datetime.fromisoformat(kwargs[key])
-                    continue
-                if key == "updated_at":
-                    self.updated_at = datetime.fromisoformat(kwargs[key])
-                    continue
-                if key != "__class__":
-                    self.__setattr__(key, kwargs[key])
+            del kwargs['__class__']
+            self.__dict__.update(kwargs)
+            self.created_at = datetime.fromisoformat(kwargs['created_at'])
+            self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
         storage.new(self)
 
     def __str__(self):

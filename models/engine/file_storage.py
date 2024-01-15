@@ -39,6 +39,5 @@ class FileStorage:
                     for key, value in dictionary.items():
                         if "BaseModel" in key:
                             BaseModel(**value)
-            # return (self.__class__.__objects)
         except FileNotFoundError:
             pass
