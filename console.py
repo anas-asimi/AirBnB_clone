@@ -12,14 +12,14 @@ class HBNBCommand(cmd.Cmd):
     if not sys.__stdin__.isatty():
         prompt = ''
         
-    def do_quit(self, command):
+    def do_quit(self, line):
         """ Method to exit the console"""
-        exit()
+        return True
         
-    def do_EOF(self, arg):
+    def do_EOF(self, line):
         """ Handles EOF to exit program """
         print()
-        exit()
+        return True
         
     def emptyline(self):
         """ Overrides the emptyline method """
