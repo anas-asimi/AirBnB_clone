@@ -11,11 +11,12 @@ class FileStorage:
 
     def all(self):
         """ all """
-        return (self.__class__.__objects)
+        return self.__class__.__objects
 
     def new(self, obj):
         """ new """
-        self.__class__.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
+        self.__class__.__objects.update(
+            {obj.__class__.__name__ + '.' + obj.id: obj})
 
     def save(self):
         """ save """
@@ -36,10 +37,9 @@ class FileStorage:
             return ({})
         try:
             with open(self.__class__.__file_path, 'r') as f:
-                json_string = f.read()
-                if json_string is None or len(json_string) == 0:
+                dictionary = json.load(f)
+                if not dictionary:
                     return ({})
-                dictionary = json.loads(json_string)
                 for obj_id in dictionary.keys():
                     if "BaseModel" in obj_id:
                         BaseModel(**dictionary[obj_id])
