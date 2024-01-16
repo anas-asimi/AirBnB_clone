@@ -198,6 +198,14 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+        elif re.match('[a-zA-Z]+\.destroy\("\S+"\)', line):
+            className = line[0: line.find('.')]
+            id = line[line.find('(') + 1: len(line) - 1].replace('"', '')
+            if id:
+                self.do_destroy(' '.join([className, id]))
+            else:
+                print("** no instance found **")
+
     def count(self, className: str):
         """ count """
         if className not in listOfClasses:
