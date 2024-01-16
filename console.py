@@ -2,6 +2,7 @@
 """ console.py """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -178,20 +179,26 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line: str):
         """ Handles to others commands """
-        
-        if ".all()" in line:
-            className = line.replace(".all()", "")
+
+        if re.match('[a-zA-Z]+\.all\(\)', line):
+            className = line[0: line.find('.')]
             self.do_all(className)
-            return
-        
-        if ".count()" in line:
-            className = line.replace(".count()", "")
+
+        elif re.match('[a-zA-Z]+\.count\(\)', line):
+            className = line[0: line.find('.')]
             counter = self.count(className)
             if type(counter) == int:
                 print(counter)
-            return
-        
-    def count(self, className:str):
+
+        elif re.match('[a-zA-Z]+\.show\("\S+"\)', line):
+            className = line[0: line.find('.')]
+            id = line[line.find('(') + 1: len(line) - 1].replace('"', '')
+            if id:
+                self.do_show(' '.join([className, id]))
+            else:
+                print("** no instance found **")
+
+    def count(self, className: str):
         """ count """
         if className not in listOfClasses:
             print("** class doesn't exist **")
@@ -199,11 +206,10 @@ class HBNBCommand(cmd.Cmd):
 
         counter = 0
         all_objs = storage.all()
-        for value in all_objs.values():
-            if className == value.__class__.__name__:
-                counter =+ 1
+        for key in all_objs.keys():
+            if className in key:
+                counter += 1
         return counter
-
 
 
 if __name__ == "__main__":
