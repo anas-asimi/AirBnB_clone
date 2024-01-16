@@ -30,6 +30,7 @@ class FileStorage:
     def reload(self):
         """ reload """
         from models.base_model import BaseModel
+        from models.user import User
 
         self.__class__.__objects = {}
         try:
@@ -39,5 +40,7 @@ class FileStorage:
                     for key, value in dictionary.items():
                         if "BaseModel" in key:
                             BaseModel(**value)
+                        if "User" in key:
+                            User(**value)
         except FileNotFoundError:
             pass

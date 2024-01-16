@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models import storage
+from models import storage, listOfClasses
 
 
 class HBNBCommand(cmd.Cmd):
@@ -30,7 +30,7 @@ class HBNBCommand(cmd.Cmd):
 
         if not line:
             print("** class name missing **")
-        
+
         if line == "BaseModel":
             my_model = BaseModel()
             print(my_model.id)
@@ -41,8 +41,6 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """ Handles to show command """
 
-        listOfClasses = ["BaseModel"]
-
         if not line:
             print("** class name missing **")
             return
@@ -57,19 +55,16 @@ class HBNBCommand(cmd.Cmd):
             return
 
         id = line.split()[1]
-        if className == "BaseModel":
-            all_objs = storage.all()
-            for key, value in all_objs.items():
-                if id == value.id:
-                    print(value)
-                    return
-            print("** no instance found **")
+        all_objs = storage.all()
+        for value in all_objs.values():
+            if id == value.id:
+                print(value)
+                return
+        print("** no instance found **")
 
     def do_destroy(self, line):
         """ Handles to destroy command """
 
-        listOfClasses = ["BaseModel"]
-
         if not line:
             print("** class name missing **")
             return
@@ -84,30 +79,27 @@ class HBNBCommand(cmd.Cmd):
             return
 
         id = line.split()[1]
-        if className == "BaseModel":
-            all_objs = storage.all()
-            for key, value in all_objs.items():
-                if id == value.id:
-                    del all_objs[key]
-                    return
-            print("** no instance found **")
-            
+        all_objs = storage.all()
+        for key, value in all_objs.items():
+            if id == value.id:
+                del all_objs[key]
+                return
+        print("** no instance found **")
+
     def do_all(self, line):
         """ Handles to all command """
-        
+
         className = '' if not line else line.split()[0]
-            
+
         all_objs = storage.all()
         for key, value in all_objs.items():
             if className == '':
                 print(value)
-            elif className == value.__class__.__name__:
+            elif className in key:
                 print(value)
 
     def do_update(self, line):
         """ Handles to update command """
-        
-        listOfClasses = ["BaseModel"]
 
         if not line:
             print("** class name missing **")
@@ -122,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
         id = line.split()[1]
-        
+
         if len(line.split()) < 3:
             print("** attribute name missing **")
             return
@@ -131,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
         if len(line.split()) < 4:
             print("** value missing **")
             return
-        value = line.split()[3].replace('"','')
+        value = line.split()[3].replace('"', '')
 
         all_objs = storage.all()
         for key, value in all_objs.items():
@@ -140,6 +132,7 @@ class HBNBCommand(cmd.Cmd):
                 all_objs[key][attribute] = valueType(value)
                 return
         print("** no instance found **")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
