@@ -20,7 +20,7 @@ class FileStorage:
 
     def save(self):
         """ save """
-        if self.__class__.__file_path != None:
+        if self.__class__.__file_path is not None:
             with open(self.__class__.__file_path, 'w', encoding='utf-8') as f:
                 temp = {}
                 for key, value in self.__class__.__objects.items():
