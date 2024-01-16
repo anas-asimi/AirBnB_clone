@@ -11,6 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models import storage, listOfClasses
+from models.utils import count, stringSpliter
 
 
 class HBNBCommand(cmd.Cmd):
@@ -100,9 +101,9 @@ class HBNBCommand(cmd.Cmd):
 
         id = line.split()[1]
         all_objs = storage.all()
-        for value in all_objs.values():
-            if id == value.id:
-                print(value)
+        for key in all_objs.keys():
+            if id in key.id:
+                print(all_objs[key])
                 return
         print("** no instance found **")
 
@@ -124,8 +125,8 @@ class HBNBCommand(cmd.Cmd):
 
         id = line.split()[1]
         all_objs = storage.all()
-        for key, value in all_objs.items():
-            if id == value.id:
+        for key in all_objs.keys():
+            if id in key:
                 del all_objs[key]
                 return
         print("** no instance found **")
@@ -136,11 +137,11 @@ class HBNBCommand(cmd.Cmd):
         className = '' if not line else line.split()[0]
 
         all_objs = storage.all()
-        for key, value in all_objs.items():
+        for key in all_objs.keys():
             if className == '':
-                print(value)
+                print(all_objs[key])
             elif className in key:
-                print(value)
+                print(all_objs[key])
 
     def do_update(self, line: str):
         """ Handles to update command """
@@ -171,7 +172,7 @@ class HBNBCommand(cmd.Cmd):
 
         all_objs = storage.all()
         for key in all_objs.keys():
-            if id == all_objs[key].id and className == all_objs[key].__class__.__name__:
+            if id in key and className in key:
                 setattr(all_objs[key], attribute, value)
                 return
         print("** no instance found **")
@@ -185,7 +186,8 @@ class HBNBCommand(cmd.Cmd):
 
         elif re.match('[a-zA-Z]+\.count\(\)', line):
             className = line[0: line.find('.')]
-            counter = self.count(className)
+            all_objs = storage.all()
+            counter = count(className, all_objs)
             if type(counter) == int:
                 print(counter)
 
@@ -219,24 +221,6 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
                 return
             self.do_update(' '.join([className, id, attribute, value]))
-
-    def count(self, className: str):
-        """ count """
-        if className not in listOfClasses:
-            print("** class doesn't exist **")
-            return
-
-        counter = 0
-        all_objs = storage.all()
-        for key in all_objs.keys():
-            if className in key:
-                counter += 1
-        return counter
-
-
-def stringSpliter(string: str):
-    """ string tokenizer """
-    return string.replace('"', '').replace(',', '').split(' ')
 
 
 if __name__ == "__main__":
