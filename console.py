@@ -18,11 +18,11 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    def do_quit(self, line):
+    def do_quit(self, line: str):
         """ Method to exit the console"""
         return True
 
-    def do_EOF(self, line):
+    def do_EOF(self, line: str):
         """ Handles EOF to exit program """
         print()
         return True
@@ -31,13 +31,13 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method """
         pass
 
-    def do_create(self, line):
+    def do_create(self, line: str):
         """ Handles to create command """
 
         if not line:
             print("** class name missing **")
             return
-        
+
         className = line.split()[0]
         if className not in listOfClasses:
             print("** class doesn't exist **")
@@ -81,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-    def do_show(self, line):
+    def do_show(self, line: str):
         """ Handles to show command """
 
         if not line:
@@ -105,7 +105,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         print("** no instance found **")
 
-    def do_destroy(self, line):
+    def do_destroy(self, line: str):
         """ Handles to destroy command """
 
         if not line:
@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         print("** no instance found **")
 
-    def do_all(self, line):
+    def do_all(self, line: str):
         """ Handles to all command """
 
         className = '' if not line else line.split()[0]
@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
             elif className in key:
                 print(value)
 
-    def do_update(self, line):
+    def do_update(self, line: str):
         """ Handles to update command """
 
         if not line:
@@ -175,6 +175,12 @@ class HBNBCommand(cmd.Cmd):
                 all_objs[key][attribute] = valueType(value)
                 return
         print("** no instance found **")
+
+    def default(self, line: str):
+        """ Handles to others commands """
+        if ".all()" in line:
+            className = line.replace(".all()", "")
+            self.do_all(className)
 
 
 if __name__ == "__main__":
