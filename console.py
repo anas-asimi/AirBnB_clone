@@ -217,6 +217,10 @@ class HBNBCommand(cmd.Cmd):
             if not attribute:
                 print("** attribute name missing **")
                 return
+            if type(attribute) == dict:
+                for key in attribute.keys():
+                    self.do_update(' '.join([className, id, key, attribute[key]]))
+                return
             if not value:
                 print("** value missing **")
                 return

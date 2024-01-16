@@ -16,6 +16,6 @@ def count(className: str, all_objs):
     return counter
 
 
-def stringSpliter(string: str):
+def stringSpliter(args: str):
     """ string tokenizer """
-    return json.loads(string.join(['[', ']']))
+    return json.loads(args.replace("'",'"').join(['[', ']']))
