@@ -31,6 +31,11 @@ class FileStorage:
         """ reload """
         from models.base_model import BaseModel
         from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
 
         self.__class__.__objects = {}
         try:
@@ -40,7 +45,17 @@ class FileStorage:
                     for key, value in dictionary.items():
                         if "BaseModel" in key:
                             BaseModel(**value)
-                        if "User" in key:
+                        elif "User" in key:
                             User(**value)
+                        elif "State" in key:
+                            State(**value)
+                        elif "City" in key:
+                            City(**value)
+                        elif "Amenity" in key:
+                            Amenity(**value)
+                        elif "Place" in key:
+                            Place(**value)
+                        elif "Review" in key:
+                            Review(**value)
         except FileNotFoundError:
             pass

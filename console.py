@@ -3,6 +3,12 @@
 import cmd
 import sys
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage, listOfClasses
 
 
@@ -30,11 +36,48 @@ class HBNBCommand(cmd.Cmd):
 
         if not line:
             print("** class name missing **")
+            return
+        
+        className = line.split()[0]
+        if className not in listOfClasses:
+            print("** class doesn't exist **")
+            return
 
-        if line == "BaseModel":
+        if className == "BaseModel":
             my_model = BaseModel()
             print(my_model.id)
             my_model.save()
+
+        elif className == "User":
+            my_model = User()
+            print(my_model.id)
+            my_model.save()
+
+        elif className == "State":
+            my_model = State()
+            print(my_model.id)
+            my_model.save()
+
+        elif className == "City":
+            my_model = City()
+            print(my_model.id)
+            my_model.save()
+
+        elif className == "Amenity":
+            my_model = Amenity()
+            print(my_model.id)
+            my_model.save()
+
+        elif className == "Place":
+            my_model = Place()
+            print(my_model.id)
+            my_model.save()
+
+        elif className == "Review":
+            my_model = Review()
+            print(my_model.id)
+            my_model.save()
+
         else:
             print("** class doesn't exist **")
 
