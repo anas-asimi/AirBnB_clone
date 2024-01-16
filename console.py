@@ -180,18 +180,18 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line: str):
         """ Handles to others commands """
 
-        if re.match('[a-zA-Z]+\.all\(\)', line):
+        if re.match(r"[a-zA-Z]+\.all\(\)", line):
             className = line[0: line.find('.')]
             self.do_all(className)
 
-        elif re.match('[a-zA-Z]+\.count\(\)', line):
+        elif re.match(r"[a-zA-Z]+\.count\(\)", line):
             className = line[0: line.find('.')]
             all_objs = storage.all()
             counter = count(className, all_objs)
-            if type(counter) == int:
+            if type(counter) is int:
                 print(counter)
 
-        elif re.match('[a-zA-Z]+\.show\("\S+"\)', line):
+        elif re.match(r"""[a-zA-Z]+\.show\("\S+"\)""", line):
             className = line[0: line.find('.')]
             id = line[line.find('(') + 1: line.find(')')].replace('"', '')
             if id:
@@ -199,7 +199,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-        elif re.match('[a-zA-Z]+\.destroy\("\S+"\)', line):
+        elif re.match(r"""[a-zA-Z]+\.destroy\("\S+"\)""", line):
             className = line[0: line.find('.')]
             id = line[line.find('(') + 1: line.find(')')].replace('"', '')
             if id:
@@ -207,7 +207,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-        elif re.match('[a-zA-Z]+\.update\(.+\)', line):
+        elif re.match(r"[a-zA-Z]+\.update\(.+\)", line):
             className = line[0: line.find('.')]
             [id, attribute, value] = stringSpliter(
                 line[line.find('(') + 1: line.find(')')])
@@ -217,9 +217,11 @@ class HBNBCommand(cmd.Cmd):
             if not attribute:
                 print("** attribute name missing **")
                 return
-            if type(attribute) == dict:
+            if type(attribute) is dict:
                 for key in attribute.keys():
-                    self.do_update(' '.join([className, id, key, attribute[key]]))
+                    self.do_update(
+                        ' '.join([className, id, key, attribute[key]])
+                    )
                 return
             if not value:
                 print("** value missing **")
