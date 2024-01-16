@@ -170,10 +170,9 @@ class HBNBCommand(cmd.Cmd):
         value = line.split()[3].replace('"', '')
 
         all_objs = storage.all()
-        for key, value in all_objs.items():
-            if id == value.id and className == value.__class__.__name__:
-                valueType = type(all_objs[key][attribute])
-                all_objs[key][attribute] = valueType(value)
+        for key in all_objs.keys():
+            if id == all_objs[key].id and className == all_objs[key].__class__.__name__:
+                setattr(all_objs[key], attribute, value)
                 return
         print("** no instance found **")
 
@@ -192,7 +191,7 @@ class HBNBCommand(cmd.Cmd):
 
         elif re.match('[a-zA-Z]+\.show\("\S+"\)', line):
             className = line[0: line.find('.')]
-            id = line[line.find('(') + 1: len(line) - 1].replace('"', '')
+            id = line[line.find('(') + 1: line.find(')')].replace('"', '')
             if id:
                 self.do_show(' '.join([className, id]))
             else:
@@ -200,11 +199,26 @@ class HBNBCommand(cmd.Cmd):
 
         elif re.match('[a-zA-Z]+\.destroy\("\S+"\)', line):
             className = line[0: line.find('.')]
-            id = line[line.find('(') + 1: len(line) - 1].replace('"', '')
+            id = line[line.find('(') + 1: line.find(')')].replace('"', '')
             if id:
                 self.do_destroy(' '.join([className, id]))
             else:
                 print("** no instance found **")
+
+        elif re.match('[a-zA-Z]+\.update\(.+\)', line):
+            className = line[0: line.find('.')]
+            [id, attribute, value] = stringSpliter(
+                line[line.find('(') + 1: line.find(')')])
+            if not id:
+                print("** instance id missing **")
+                return
+            if not attribute:
+                print("** attribute name missing **")
+                return
+            if not value:
+                print("** value missing **")
+                return
+            self.do_update(' '.join([className, id, attribute, value]))
 
     def count(self, className: str):
         """ count """
@@ -218,6 +232,11 @@ class HBNBCommand(cmd.Cmd):
             if className in key:
                 counter += 1
         return counter
+
+
+def stringSpliter(string: str):
+    """ string tokenizer """
+    return string.replace('"', '').replace(',', '').split(' ')
 
 
 if __name__ == "__main__":
