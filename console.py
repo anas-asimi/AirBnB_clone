@@ -178,9 +178,32 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line: str):
         """ Handles to others commands """
+        
         if ".all()" in line:
             className = line.replace(".all()", "")
             self.do_all(className)
+            return
+        
+        if ".count()" in line:
+            className = line.replace(".count()", "")
+            counter = self.count(className)
+            if type(counter) == int:
+                print(counter)
+            return
+        
+    def count(self, className:str):
+        """ count """
+        if className not in listOfClasses:
+            print("** class doesn't exist **")
+            return
+
+        counter = 0
+        all_objs = storage.all()
+        for value in all_objs.values():
+            if className == value.__class__.__name__:
+                counter =+ 1
+        return counter
+
 
 
 if __name__ == "__main__":
