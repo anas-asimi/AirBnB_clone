@@ -10,12 +10,20 @@
 .filters div {
 	height: 100%;
 	width: 25%;
-	border-right: 1px solid #DDDDDD;
+	margin-left: 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.filters div:first-of-type {
+	border-right: 1px solid #dddddd;
 }
 .filters div h3 {
+	margin: 0;
 	font-weight: 600;
 }
 .filters div h4 {
+	margin: 0;
 	font-weight: 400;
 	font-size: 14px;
 }
@@ -30,6 +38,6 @@
 	margin-left: auto;
 	margin-right: 30px;
 }
-.filters button:hover{
+.filters button:hover {
 	opacity: 0.9;
 }
