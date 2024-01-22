@@ -1,7 +1,7 @@
 .places h1 {
 	font-size: 30px;
 }
-.places ul {
+.places > ul {
 	margin: 0;
 	list-style: none;
 	display: flex;
@@ -12,18 +12,18 @@
 }
 .places ul li article {
 	width: 390px;
-	height: calc(100% - 20px * 2);
+	height: calc(100% - 20px * 4);
 	padding: 20px;
 	margin: 20px;
 	border: 1px solid #ff5a5f;
 	border-radius: 4px;
 	position: relative;
 }
-.places ul li article h2 {
+.places ul li article > h2 {
 	font-size: 30px;
 	text-align: center;
 	margin-top: 0;
-	margin-bottom: 36px;
+	margin-bottom: 48px;
 	padding: 0;
 }
 .places ul li article .price_by_night {
