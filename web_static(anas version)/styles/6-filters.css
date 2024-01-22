@@ -36,6 +36,7 @@
 }
 .popover {
 	overflow: hidden;
+	z-index: 99;
 	left: 0;
 	top: 100%;
 	height: auto;
